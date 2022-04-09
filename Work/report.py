@@ -32,26 +32,26 @@ def read_prices(filename):
     return prices
 
 
-def make_report(portfolio_filename, prices_filename):
-    '''Compute gain and loss'''
-    
-    portfolio = read_portfolio(portfolio_filename)
-    prices = read_prices(prices_filename)
-    total_gain_loss = 0
-    print(f"{'Name':>10s} {'Shares':>10} {'Price':>10} {'Change':>10}")
-    print(f"{'':->10s} {'':->10s} {'':->10s} {'':->10s}")
-    
+def make_report(portfolio, prices):
+    '''Create a new dictionary with the new value and the difference with previous price.'''
+    report = []
+    headers = ('Name', 'Shares', 'Price', 'Change')
+    report.append(headers)
     for row in portfolio:
-        previous_value = row['shares'] * row['price']
         actual_price = prices.get(row['name'], 0.0)
-        if actual_price:
-            actual_value =  actual_price * row['shares']
-            total_gain_loss += (actual_value - previous_value)
-            print(f"{row['name']:>10s} {row['shares']:>10d} {actual_price:>10,.2f} {actual_price - row['price']:>10,.2f}")
-        else:
-            print(f"{row['name']:>10s} {row['shares']:>10d} {'None':>10s} {'':?>10s}")
+        holding = (row['name'], row['shares'], actual_price, actual_price - row['price'])
+        report.append(holding) 
     
-    print(f"\nTotal gain/loss: {total_gain_loss:10,.2f}")
+    return report
+
+def paint_report(report):
+    '''Paint the report.'''
+    name, shares, price, change = report[0]
+    print(f'{name:>10s} {shares:>10s} {price:>10s} {change:>10s}')
+    print(f"{'':->10s} {'':->10s} {'':->10s} {'':->10s}")
+    for name, shares, price, change in report[1:]:
+        print(f"{name:>10s} {shares:>10d} {'$' + str(round(price,2)):>10s} {change:>10.2f}")
+
 
 
 if __name__ == '__main__':
@@ -62,5 +62,9 @@ if __name__ == '__main__':
         portfolio_filename = 'Data/portfolio.csv'
         prices_filename = 'Data/prices.csv'
     
-    make_report(portfolio_filename, prices_filename)
+    portfolio = read_portfolio(portfolio_filename)
+    prices = read_prices(prices_filename)
+    report = make_report(portfolio, prices)
+    paint_report(report)
+
 
