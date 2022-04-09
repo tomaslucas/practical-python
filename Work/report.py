@@ -32,14 +32,14 @@ def read_prices(filename):
     return prices
 
 
-def gain_loss(portfolio_filename, prices_filename):
+def make_report(portfolio_filename, prices_filename):
     '''Compute gain and loss'''
     
     portfolio = read_portfolio(portfolio_filename)
     prices = read_prices(prices_filename)
     total_gain_loss = 0
-    print(f"{'Name':>6s} {'Shares':>10} {'Price':>10} {'New Price':>10} {'Gain/loss':>10}")
-    print(f"{'':->6s} {'':->10s} {'':->10s} {'':->10s} {'':->10s}")
+    print(f"{'Name':>10s} {'Shares':>10} {'Price':>10} {'Change':>10}")
+    print(f"{'':->10s} {'':->10s} {'':->10s} {'':->10s}")
     
     for row in portfolio:
         previous_value = row['shares'] * row['price']
@@ -47,9 +47,9 @@ def gain_loss(portfolio_filename, prices_filename):
         if actual_price:
             actual_value =  actual_price * row['shares']
             total_gain_loss += (actual_value - previous_value)
-            print(f"{row['name']:>6s} {row['shares']:>10d} {row['price']:>10,.2f} {actual_price:>10,.2f} {(actual_value - previous_value):>10,.2f}")
+            print(f"{row['name']:>10s} {row['shares']:>10d} {actual_price:>10,.2f} {actual_price - row['price']:>10,.2f}")
         else:
-            print(f"{row['name']:>6s} {row['shares']:>10d} {row['price']:>10,.2f} {'None':>10s} {'':?>10s}")
+            print(f"{row['name']:>10s} {row['shares']:>10d} {'None':>10s} {'':?>10s}")
     
     print(f"\nTotal gain/loss: {total_gain_loss:10,.2f}")
 
@@ -62,5 +62,5 @@ if __name__ == '__main__':
         portfolio_filename = 'Data/portfolio.csv'
         prices_filename = 'Data/prices.csv'
     
-    gain_loss(portfolio_filename, prices_filename)
+    make_report(portfolio_filename, prices_filename)
 
