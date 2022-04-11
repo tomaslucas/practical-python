@@ -4,28 +4,22 @@
 import csv
 import sys
 
-def read_portfolio(filename:str) -> list:
+from fileparse import parse_csv
+
+def read_portfolio(filename:str, select=['name','shares','price'], types=[str,int,float]) -> list:
     '''
     Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price.
     '''
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        select = ['name', 'shares', 'price']
-        types = [str, int, float]
-        indices = [headers.index(colname) for colname in select]
-        return [{colname: func(row[index]) for colname, index, func in zip(select, indices, types)} for row in rows]
+    return parse_csv(filename=filename, select=select, types=types)
+    
 
-
-def read_prices(filename:str) -> dict:
+def read_prices(filename:str, types=[str,float], has_headers=False) -> dict:
     '''
     It reads a set of prices where the keys are the stock names and the value 
     are the stock prices.
     '''
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        return {row[0]: float(row[1]) for row in rows if len(row) > 0}
+    return dict(parse_csv(filename=filename, types=types, has_headers=has_headers))
     
 
 def make_report(portfolio, prices):
