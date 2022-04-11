@@ -7,6 +7,8 @@ def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, del
     '''
     Parse a CSV file into a list of records.
     '''
+    if select and not has_headers:
+        raise RuntimeError('select argument requieres column headers')
     with open(filename, 'rt') as f:
         rows = csv.reader(f, delimiter=delimiter)
         if has_headers:
@@ -27,7 +29,10 @@ def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, del
                 return [{colname: row[indice] for colname, indice in zip(select, indices)} for row in rows if len(row) > 0]
         else:
             if types:
-                return [tuple([func(val) for func, val in zip(types, row)]) for row in rows if len(row) > 0]
+                try:
+                    return [tuple([func(val) for func, val in zip(types, row)]) for row in rows if len(row) > 0]
+                except ValueError as e:
+                    print(f'There is a problem with the type of data: {e}')
             else:
                 return [tuple(row) for row in rows if len(row) > 0]
             
