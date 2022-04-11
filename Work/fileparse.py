@@ -3,7 +3,7 @@
 # Exercise 3.3
 import csv
 
-def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, delimiter =',') -> list:
+def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, delimiter =',', silence_errors=False) -> list:
     '''
     Parse a CSV file into a list of records.
     '''
@@ -24,13 +24,13 @@ def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, del
                             try:
                                 record.append({colname: func(row[indice]) for colname, indice, func in zip(select, indices, types)})
                             except ValueError as e:
-                                print(f'Could not convert {row}')
-                                print(f'Row: {rowno}: Reason {e}')
+                                if not silence_errors:
+                                    print(f'Could not convert {row}')
+                                    print(f'Row: {rowno}: Reason {e}')
                     return record
                 else:
                     print('The number of elements given for types is not correct.')
                     return None
-                
             else:
                 return [{colname: row[indice] for colname, indice in zip(select, indices)} for row in rows if len(row) > 0]
         else:
@@ -40,8 +40,9 @@ def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, del
                         try:
                             record.appen(tuple([func(val) for func, val in zip(types, row)]))
                         except ValueError as e:
-                            print(f'Could not convert {row}')
-                            print(f'Row: {rowno}: Reason {e}') 
+                            if not silence_errors:
+                                print(f'Could not convert {row}')
+                                print(f'Row: {rowno}: Reason {e}') 
                 return record
             else:
                 return [tuple(row) for row in rows if len(row) > 0]
