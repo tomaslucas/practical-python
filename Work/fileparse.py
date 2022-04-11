@@ -38,7 +38,7 @@ def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, del
                 for rowno, row in enumerate(rows, start=1):
                     if len(row) > 0:
                         try:
-                            record.appen(tuple([func(val) for func, val in zip(types, row)]))
+                            record.append(tuple([func(val) for func, val in zip(types, row)]))
                         except ValueError as e:
                             if not silence_errors:
                                 print(f'Could not convert {row}')
