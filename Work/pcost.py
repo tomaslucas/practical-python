@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # pcost.py
 #
 # Exercise 1.27
@@ -15,6 +16,6 @@ if __name__ == '__main__':
         filename = sys.argv[1]
     else:
         filename = 'Data/portfolio.csv'
-        
+
     cost = portfolio_cost(filename)
     print('Total cost:', cost)
