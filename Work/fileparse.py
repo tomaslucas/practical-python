@@ -8,7 +8,6 @@ def parse_csv(file, select=[], types:list=[], has_headers=True, delimiter =',', 
     Parse a file into a list of records.
     '''
     try:
-        some_object_iterator = iter(file)
         if select and not has_headers:
             raise RuntimeError('select argument requieres column headers')
         record = []
@@ -48,6 +47,6 @@ def parse_csv(file, select=[], types:list=[], has_headers=True, delimiter =',', 
             else:
                 return [tuple(row) for row in rows if len(row) > 0]
     except TypeError as te:
-        print(f'{file} is not iterable.')
+        print(f'{file} object is not valid for this program.')
             
         
