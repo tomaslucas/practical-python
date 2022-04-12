@@ -3,15 +3,16 @@
 # Exercise 3.3
 import csv
 
-def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, delimiter =',', silence_errors=False) -> list:
+def parse_csv(file, select=[], types:list=[], has_headers=True, delimiter =',', silence_errors=False) -> list:
     '''
-    Parse a CSV file into a list of records.
+    Parse a file into a list of records.
     '''
-    if select and not has_headers:
-        raise RuntimeError('select argument requieres column headers')
-    record = []
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f, delimiter=delimiter)
+    try:
+        some_object_iterator = iter(file)
+        if select and not has_headers:
+            raise RuntimeError('select argument requieres column headers')
+        record = []
+        rows = csv.reader(file, delimiter=delimiter)
         if has_headers:
             headers = next(rows)    # Read the files headers
             if not select:
@@ -46,5 +47,7 @@ def parse_csv(filename:str, select:list=[], types:list=[], has_headers=True, del
                 return record
             else:
                 return [tuple(row) for row in rows if len(row) > 0]
+    except TypeError as te:
+        print(f'{file} is not iterable.')
             
         
