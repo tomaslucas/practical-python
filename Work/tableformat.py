@@ -65,3 +65,14 @@ def create_formatter(fmt):
         raise RuntimeError(f'Unknown format {fmt}')
     return formatter
 
+def print_table(data, select, formatter):
+    '''
+    Print a table showing user-specified attributes.
+    '''
+    if not select:
+        select = ['name','shares','price']
+    
+    formatter.headings(select)
+    for line in data:
+        rowdata = [str(getattr(line, colname))for colname in select]
+        formatter.row(rowdata)
