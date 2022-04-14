@@ -9,7 +9,8 @@ from report import read_portfolio
 
 def portfolio_cost(filename):
     portfolio = read_portfolio(filename)
-    return sum([record.shares * record.price for record in portfolio])
+    return sum([record.cost for record in portfolio])
+    #return sum([record.shares * record.price for record in portfolio])
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
