@@ -1,4 +1,5 @@
 class Stock():
+    __slots__ = ('name', '_shares', 'price')
     def __init__(self, name, shares, price) -> None:
         self.name = name
         self.shares = shares
