@@ -10,14 +10,17 @@ from portfolio import Portfolio
 from stock import Stock
 import tableformat
 
-def read_portfolio(filename:str, select=['name','shares','price'], types=[str,int,float]) -> list:
+def read_portfolio(filename:str, **opts) -> list:
     '''
     Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price.
     '''
     with open(filename, 'rt') as file:
-        portdicts = parse_csv(file=file, select=select, types=types)
-        portfolio = [Stock(d['name'], d['shares'], d['price']) for d in portdicts]
+        portdicts = parse_csv(file=file,
+                              select=['name','shares','price'],
+                              types=[str,int,float],
+                              **opts)
+        portfolio = [Stock(**d) for d in portdicts]
         return Portfolio(portfolio)
 
 def read_prices(filename:str, types=[str,float], has_headers=False) -> dict:
