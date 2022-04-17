@@ -5,10 +5,10 @@
 import csv
 import sys
 
-from report import read_portfolio
+from . import report
 
 def portfolio_cost(filename):
-    portfolio = read_portfolio(filename)
+    portfolio = report.read_portfolio(filename)
     return portfolio.total_cost
     #return sum([record.cost for record in portfolio])
     #return sum([record.shares * record.price for record in portfolio])

@@ -15,10 +15,9 @@ logging.basicConfig(
 import csv
 import sys
 
-from fileparse import parse_csv
-from portfolio import Portfolio
-from stock import Stock
-import tableformat
+from . import fileparse
+from . import portfolio
+from . import tableformat
 
 def read_portfolio(filename:str, **opts) -> list:
     '''
@@ -26,7 +25,7 @@ def read_portfolio(filename:str, **opts) -> list:
     name, shares, and price.
     '''
     with open(filename, 'rt') as file:
-        return Portfolio.from_csv(file, **opts)
+        return portfolio.Portfolio.from_csv(file, **opts)
 
 def read_prices(filename:str, types=[str,float], has_headers=False) -> dict:
     '''
@@ -34,7 +33,7 @@ def read_prices(filename:str, types=[str,float], has_headers=False) -> dict:
     are the stock prices.
     '''
     with open(filename, 'rt') as file:
-        return dict(parse_csv(file=file, types=types, has_headers=has_headers))
+        return dict(fileparse.parse_csv(file=file, types=types, has_headers=has_headers))
     
 
 def make_report(portfolio, prices):

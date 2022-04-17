@@ -1,9 +1,9 @@
-from typedproperty import *
+from . import typedproperty
 
 class Stock():
-    name = String('name')
-    shares = Integer('shares')
-    price = Float('price')
+    name = typedproperty.String('name')
+    shares = typedproperty.Integer('shares')
+    price = typedproperty.Float('price')
 
     def __init__(self, name, shares, price) -> None:
         self.name = name

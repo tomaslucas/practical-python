@@ -1,8 +1,8 @@
 # ticker.py
 
-import report
-import tableformat
-from follow import follow
+from . import report
+from . import tableformat
+from . import follow
 import csv
 
 def select_columns(rows, indices):
@@ -28,7 +28,7 @@ def parse_stock_data(lines):
 
 def ticker(portfile, logfile, fmt):
     portfolio = report.read_portfolio(portfile)
-    rows = parse_stock_data(follow(logfile))
+    rows = parse_stock_data(follow.follow(logfile))
     rows = filter_symbols(rows, portfolio)
     formatter = tableformat.create_formatter(fmt)
     formatter.headings(['Name','Price','Change'])
