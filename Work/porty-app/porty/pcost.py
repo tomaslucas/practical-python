@@ -13,11 +13,12 @@ def portfolio_cost(filename):
     #return sum([record.cost for record in portfolio])
     #return sum([record.shares * record.price for record in portfolio])
 
-if __name__ == '__main__':
-    if len(sys.argv) == 2:
-        filename = sys.argv[1]
-    else:
-        filename = 'Data/portfolio.csv'
+def main(args):
+    if len(args) != 2:
+        raise SystemExit('Usage: %s portfoliofile' % args[0])
+    filename = args[1]
+    print('Total cost:', portfolio_cost(filename))
 
-    cost = portfolio_cost(filename)
-    print('Total cost:', cost)
+if __name__ == '__main__':
+    import sys
+    main(sys.argv)
