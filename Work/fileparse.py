@@ -2,6 +2,8 @@
 #
 # Exercise 3.3
 import csv
+import logging
+log = logging.getLogger(__name__)
 
 def parse_csv(file, select=[], types:list=[], has_headers=True, delimiter =',', silence_errors=False) -> list:
     '''
@@ -25,8 +27,9 @@ def parse_csv(file, select=[], types:list=[], has_headers=True, delimiter =',', 
                                 record.append({colname: func(row[indice]) for colname, indice, func in zip(select, indices, types)})
                             except ValueError as e:
                                 if not silence_errors:
-                                    print(f'Could not convert {row}')
-                                    print(f'Row: {rowno}: Reason {e}')
+                                    log.warning(f"Row {rowno}: Couldn't convert {row}")
+                                    log.debug(f"Row {rowno}: Reason {e}")
+                                    continue
                     return record
                 else:
                     print('The number of elements given for types is not correct.')
